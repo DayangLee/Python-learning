@@ -5,3 +5,6 @@ Python学习
 > * 1.py -- 第一个Python程序
 > * 2.py -- 数据类型和变量
 > * 3.py -- 字符串和编码
+> * 4.py -- list 和 tuple
+> * 5.py -- 条件判断 和 循环
+> * 6.py -- dict 和 set
