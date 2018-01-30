@@ -161,12 +161,74 @@ print(calc1(*nums))  # 14
 # 函数person除了必选参数name和age外，还接受关键字参数kw。在调用该函数时，可以只传入必选参数, 也可以传入任意个数的关键字参数
 # 关键字参数有什么用？它可以扩展函数的功能。比如，在person函数里，我们保证能接收到name和age这两个参数，但是，如果调用者愿意提供更多的参数，我们也能收到。试想你正在做一个用户注册的功能，除了用户名和年龄是必填项外，其他都是可选项，利用关键字参数来定义这个函数就能满足注册的需求。
 
+
 def person(name, age, **kw):
     print('name:', name, 'age:', age, 'other:', kw)
 
 
 person('Dayang', 24)  # name: Dayang age: 24 other: {}
-person('JY', 23, city='Beijing', Job="nngineer")  # name: JY age: 23 other: {'Job': 'nngineer', 'city': 'Beijing'}
+person(
+    'JY', 23, city='Beijing', Job="nngineer"
+)  # name: JY age: 23 other: {'Job': 'nngineer', 'city': 'Beijing'}
 extra = {'city': 'Beijing', 'job': 'Engineer'}
-person('Jack', 24, **extra)  # name: Jack age: 24 other: {'job': 'Engineer', 'city': 'Beijing'}
+person('Jack', 24, **extra
+       )  # name: Jack age: 24 other: {'job': 'Engineer', 'city': 'Beijing'}
 
+# 命名关键字参数
+# 对于关键字参数，函数的调用者可以传入任意不受限制的关键字参数。至于到底传入了哪些，就需要在函数内部通过kw检查。
+# 仍以person()函数为例，我们希望检查是否有city和job参数：
+
+
+def person1(name, age, **kw):
+    if 'city' in kw:
+        return
+    if 'job' in kw:
+        pass
+    print('name:', name, 'age:', age, 'other:', kw)
+
+
+person1(
+    'Jack1', 24, addr='Chaoyang', zipcode=123456
+)  # name: Jack1 age: 24 other: {'zipcode': 123456, 'addr': 'Chaoyang'}
+person1('Jack2', 24, city='Beijing', addr='Chaoyang', zipcode=123456)  #
+
+
+# 如果要限制关键字参数的名字，就可以用命名关键字参数，例如，只接收city和job作为关键字参数。这种方式定义的函数如下：
+def person2(name, age, *, city, job):
+    print(name, age, city, job)
+
+
+# 和关键字参数**kw不同，命名关键字参数需要一个特殊分隔符*，*后面的参数被视为命名关键字参数。
+# 调用方式如下：
+person2('Jack', 24, city='Beijing', job='Engineer')  # Jack 24 Beijing Engineer
+
+
+# 如果函数定义中已经有了一个可变参数，后面跟着的命名关键字参数就不再需要一个特殊分隔符*了：
+def person3(name, age, *args, city, job):
+    print(name, age, args, city, job)
+
+
+# 命名关键字参数必须传入参数名，这和位置参数不同。如果没有传入参数名，调用将报错：
+person3(
+    'Jack', 24, 'haha', city='Beijing',
+    job='Engineer')  # Jack 24 ('haha',) Beijing Engineer
+
+
+# 命名关键字参数可以有缺省值，从而简化调用：
+def person4(name, age, *, city='Beijing', job):
+    print(name, age, city, job)
+
+
+# 由于命名关键字参数city具有默认值，调用时，可不传入city参数：
+person4('Jack', 24, job='Engineer')  # Jack 24 Beijing Engineer
+
+
+# 参数组合
+# 在Python中定义函数，可以用必选参数、默认参数、可变参数、关键字参数和命名关键字参数，这5种参数都可以组合使用。但是请注意，参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。
+# 比如定义一个函数，包含上述若干种参数：
+def f1(a, b, c=0, *args, **kw):
+    print('a =', a, 'b =', b, 'c =', c, 'args =', args, 'kw =', kw)
+
+
+def f2(a, b, c=0, *, d, **kw):
+    print('a =', a, 'b =', b, 'c =', c, 'd =', d, 'kw =', kw)
